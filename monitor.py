@@ -12,6 +12,8 @@ docker_hub_password = ""
 datadog_api_key = ""
 datadog_app_key = ""
 
+docker_repo = "locnh/busybox"
+
 # Main
 is_healthy = True
 
@@ -38,11 +40,11 @@ try:
     container = client.containers.run("busybox", "date > /check.log", detach=True)
 
     print("Making change and commit to image ...")
-    container.commit("locnh/busybox", tag="test")
+    container.commit(docker_repo, tag="test")
 
     print("Pushing image ...")
     running_time = time.time()
-    client.images.push("locnh/busybox:test")
+    client.images.push("%s:test" % docker_repo)
     running_time = time.time() - running_time
 except:
     is_healthy = False
